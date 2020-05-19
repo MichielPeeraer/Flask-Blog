@@ -6,13 +6,13 @@ posts = [
         'author': 'J.K. Rowling',
         'title': 'Blog Post 1',
         'content': 'First post content',
-        'date': 'May 18, 2020'
+        'date_posted': 'May 18, 2020'
     },
     {
         'author': 'Stephen King',
         'title': 'Blog Post 2',
         'content': 'Second post content',
-        'date': 'May 19, 2020'
+        'date_posted': 'May 19, 2020'
     }
 ]
 
