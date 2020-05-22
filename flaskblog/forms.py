@@ -1,3 +1,5 @@
+from PIL import Image
+
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
@@ -52,3 +54,10 @@ class UpdateAccountForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('This email already exists.')
+
+    def validate_picture(self, picture):
+    
+        if picture.data:
+            image = Image.open(picture.data)
+            if image.size[0] != image.size[1]:
+                raise ValidationError('This must be a square image.')

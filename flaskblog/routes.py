@@ -1,5 +1,5 @@
 import secrets, os
-from PIL import Image
+from PIL import Image, ImageOps
 from flask import render_template, url_for, flash, redirect, request
 from flaskblog import app, db, bcrypt
 from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm
@@ -25,6 +25,10 @@ posts = [
 @app.route("/home")
 def home():
     return render_template('home.html', posts=posts)
+
+@app.route("/about")
+def about():
+    return render_template('about.html', title='About')
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -108,20 +112,30 @@ def account():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('account.html', title='Account', image_file=image_file, form=form)
 
-@app.route("/about")
-def about():
-    return render_template('about.html', title='About')
-
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     f_name = random_hex + f_ext
     path = os.path.join(app.root_path, 'static/profile_pics', f_name)
 
-    output_size = (125, 125)
+    output_size = 125, 125
     image = Image.open(form_picture)
+    image = ImageOps.exif_transpose(image)
     image.thumbnail(output_size)
-
     image.save(path)
 
     return f_name
+
+@app.route("/post/new")
+@login_required
+def new_post()
+
+
+
+# TO DO
+#
+# write function to - delete profile pic(s)
+#                   - go back to default pic when selected
+# translate website to english (everything, also error messages etc)
+# option to delete account
+# password, email reset
