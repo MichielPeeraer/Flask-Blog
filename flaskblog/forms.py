@@ -2,7 +2,7 @@ from PIL import Image
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flaskblog.models import User
 
@@ -61,3 +61,9 @@ class UpdateAccountForm(FlaskForm):
             image = Image.open(picture.data)
             if image.size[0] != image.size[1]:
                 raise ValidationError('This must be a square image.')
+
+class PostForm(FlaskForm):
+
+    title = StringField('Title', validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    submit = SubmitField('Post')
