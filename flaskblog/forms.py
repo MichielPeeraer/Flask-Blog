@@ -1,5 +1,4 @@
 from PIL import Image
-
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
@@ -39,6 +38,7 @@ class UpdateAccountForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
+    default_picture = BooleanField('Restore Default Picture')
     submit = SubmitField('Save Changes')
 
     def validate_username(self, username):

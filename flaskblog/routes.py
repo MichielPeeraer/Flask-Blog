@@ -96,7 +96,10 @@ def account():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file
-
+        
+        if form.default_picture.data:
+            current_user.image_file = 'default.jpg'
+        
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
@@ -126,16 +129,15 @@ def save_picture(form_picture):
 
     return f_name
 
-@app.route("/post/new")
-@login_required
-def new_post()
+#@app.route("/post/new")
+#@login_required
+#def new_post():
 
 
 
 # TO DO
 #
-# write function to - delete profile pic(s)
-#                   - go back to default pic when selected
+# write function to delete profile pic(s)
 # translate website to english (everything, also error messages etc)
 # option to delete account
 # password, email reset

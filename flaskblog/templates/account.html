@@ -55,7 +55,12 @@
                             {% endfor %}
                         {% endif %}
                     </div>
-    
+
+                    <div class="form-check">
+                        {{ form.default_picture(class="form-check-input") }}
+                        {{ form.default_picture.label(class="form-check-label") }}
+                    </div>
+
                 </fieldset>
     
                 <div class="form-group">
