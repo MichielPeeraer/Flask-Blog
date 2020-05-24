@@ -1,10 +1,11 @@
 import secrets, os
 from PIL import Image, ImageOps
 from flask import render_template, url_for, flash, redirect, request, abort
-from flaskblog import app, db, bcrypt
+from flaskblog import app, db, bcrypt, mail
 from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, RequestResetForm, ResetPasswordForm
 from flaskblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
+from flask_mail import Message
 
 
 @app.route("/")
@@ -218,13 +219,22 @@ def reset_request():
         
         user = User.query.filter_by(email=form.email.data).first()
         send_reset_email(user)
-        flash(f'An email has been sent to {{ form.email.data }} with a link to reset your password', 'info')
+        flash(f'An email has been sent to { form.email.data } with a link to reset your password', 'info')
 
         return redirect(url_for('login'))
 
     return render_template('reset_request.html', title='Reset Password', form=form)
 
-#def send_reset_email(user):
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Flask Blog - Password Reset Request', sender='michiel.peeraer@telenet.be', recipients=[user.email])
+
+    msg1 = f'To reset your password, click on the following link:\n\n'
+    link = url_for('reset_password', token=token, _external=True)
+    msg2 = f'\n\nIf you did not make this request, then simply ignore this email.'
+
+    msg.body = msg1 + link + msg2
+    mail.send(msg)
 
 
 @app.route("/reset_password/<token>", methods=['GET', 'POST'])
@@ -240,6 +250,17 @@ def reset_password(token):
         return redirect(url_for('reset_request'))
 
     form = ResetPasswordForm()
+
+    if form.validate_on_submit():
+
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+
+        login_user(user)
+        flash(f'Your password has been reset!', 'success')
+
+        return redirect(url_for('home'))
 
     return render_template('reset_password.html', title='Reset Password', form=form)
 
