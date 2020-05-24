@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_mail import Mail
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '9093f7fc341e08d9a1e5be02a205def9'
