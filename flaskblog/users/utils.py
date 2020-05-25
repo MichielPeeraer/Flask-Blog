@@ -26,7 +26,7 @@ def send_reset_email(user):
     msg = Message('Flask Blog - Password Reset Request', sender='michiel.peeraer@telenet.be', recipients=[user.email])
 
     msg1 = f'To reset your password, click on the following link:\n\n'
-    link = url_for('reset_password', token=token, _external=True)
+    link = url_for('users.reset_password', token=token, _external=True)
     msg2 = f'\n\nIf you did not make this request, then simply ignore this email and no changes will be made.'
 
     msg.body = msg1 + link + msg2

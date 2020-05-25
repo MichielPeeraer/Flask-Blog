@@ -11,7 +11,7 @@ users = Blueprint('users', __name__)
 def register():
 
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('main.home'))
     
     form = RegistrationForm()
 
@@ -26,7 +26,7 @@ def register():
         login_user(user)
         flash(f'Your account has been successfully created!', 'success')
 
-        return redirect(url_for('home'))
+        return redirect(url_for('main.home'))
 
     return render_template('register.html', title='Register', form=form)
 
@@ -34,7 +34,7 @@ def register():
 def login():
 
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('main.home'))
 
     form = LoginForm()
 
@@ -50,7 +50,7 @@ def login():
             if next_page:
                 return redirect(next_page)
             else:
-                return redirect(url_for('home'))
+                return redirect(url_for('main.home'))
 
         else:
             flash(f'Login unsuccessful. Please check your email and/or password', 'danger')
@@ -61,7 +61,7 @@ def login():
 def logout():
 
     logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('users.login'))
 
 @users.route("/account", methods=['GET', 'POST'])
 @login_required
@@ -83,7 +83,7 @@ def account():
         db.session.commit()
         flash(f'Your account has been updated!', 'success')
 
-        return redirect(url_for('account'))
+        return redirect(url_for('users.account'))
 
     elif request.method == 'GET':
         
@@ -109,7 +109,7 @@ def user_posts(username):
 def reset_request():
 
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('main.home'))
 
     form = RequestResetForm()
 
@@ -119,7 +119,7 @@ def reset_request():
         send_reset_email(user)
         flash(f'An email has been sent to { form.email.data } with a link to reset your password', 'info')
 
-        return redirect(url_for('login'))
+        return redirect(url_for('users.login'))
 
     return render_template('reset_request.html', title='Reset Password', form=form)
 
@@ -127,13 +127,13 @@ def reset_request():
 def reset_password(token):
 
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('main.home'))
 
     user = User.verify_reset_token(token)
 
     if user is None:
         flash(f'That is an invalid or expired token', 'warning')
-        return redirect(url_for('reset_request'))
+        return redirect(url_for('users.reset_request'))
 
     form = ResetPasswordForm()
 
@@ -146,6 +146,6 @@ def reset_password(token):
         login_user(user)
         flash(f'Your password has been reset!', 'success')
 
-        return redirect(url_for('home'))
+        return redirect(url_for('main.home'))
 
     return render_template('reset_password.html', title='Reset Password', form=form)
