@@ -22,4 +22,25 @@ app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASSWORD')
 mail = Mail(app)
 
-from flaskblog import routes
+from flaskblog.users.routes import users
+from flaskblog.posts.routes import posts
+from flaskblog.main.routes import main
+
+app.register_blueprint(users)
+app.register_blueprint(posts)
+app.register_blueprint(main)
+
+
+
+
+
+
+
+
+
+
+# TO DO
+#
+# write function to choose/delete uploaded profile pic(s)
+# translate website to english (everything, also error messages etc)
+# option to delete account
