@@ -46,19 +46,21 @@
                         {% endif %}
                     </div>
 
-                    <div class="form-group">
-                        {{ form.picture.label }}
-                        {{ form.picture(class="form-control-file") }}
-                        {% if form.picture.errors %}
-                            {% for error in form.picture.errors %}
-                                <span class="text-danger">{{ error }}</span><br>
-                            {% endfor %}
-                        {% endif %}
-                    </div>
+                    <div class="form-inline mb-3 align-items-end">
+                        <div class="form-group">
+                            {{ form.picture.label(class="mb-2") }}
+                            {{ form.picture(class="form-control-file") }}
+                            {% if form.picture.errors %}
+                                {% for error in form.picture.errors %}
+                                    <span class="text-danger">{{ error }}</span><br>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
 
-                    <div class="form-check">
-                        {{ form.default_picture(class="form-check-input") }}
-                        {{ form.default_picture.label(class="form-check-label") }}
+                        <div class="form-check">
+                            {{ form.default_picture(class="form-check-input") }}
+                            {{ form.default_picture.label(class="form-check-label") }}
+                        </div>
                     </div>
 
                 </fieldset>

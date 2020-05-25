@@ -282,5 +282,4 @@ def reset_password(token):
 #
 # write function to choose/delete uploaded profile pic(s)
 # translate website to english (everything, also error messages etc)
-# working 'remember me'
 # option to delete account
