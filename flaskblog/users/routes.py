@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog import db, bcrypt
 from flaskblog.models import User, Post
-from flaskblog.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
+from flaskblog.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, DeleteAccountForm, RequestResetForm, ResetPasswordForm
 from flaskblog.users.utils import save_picture, send_reset_email
 
 users = Blueprint('users', __name__)
@@ -92,6 +92,28 @@ def account():
 
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('account.html', title='Account', image_file=image_file, form=form)
+
+@users.route("/account/delete", methods=['GET', 'POST'])
+@login_required
+def account_delete():
+
+    form = DeleteAccountForm()
+
+    if form.validate_on_submit():
+
+        if bcrypt.check_password_hash(current_user.password, form.password.data):
+
+            Post.query.filter_by(author=current_user).delete()
+            db.session.delete(current_user)
+            db.session.commit()
+            flash(f'Your account has been deleted', 'success')
+
+            return redirect(url_for('users.register'))
+
+        else:
+            flash(f'Deletion unsuccessful. Please check your password', 'danger')
+
+    return render_template('account_delete.html', title='Delete Account', form=form)
 
 @users.route("/user/<string:username>")
 def user_posts(username):

@@ -62,6 +62,11 @@ class UpdateAccountForm(FlaskForm):
             if image.size[0] != image.size[1]:
                 raise ValidationError('This must be a square image.')
 
+class DeleteAccountForm(FlaskForm):
+
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Delete Account')
+
 class RequestResetForm(FlaskForm):
 
     email = StringField('Email', validators=[DataRequired(), Email()])

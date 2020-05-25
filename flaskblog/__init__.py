@@ -47,4 +47,3 @@ def create_app(config_class=Config):
 #
 # write function to choose/delete uploaded profile pic(s)
 # translate website to english (everything, also error messages etc)
-# option to delete account, with all their posts
