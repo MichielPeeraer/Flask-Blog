@@ -35,15 +35,3 @@ def create_app(config_class=Config):
     app.register_blueprint(errors)
 
     return app
-
-
-
-
-
-
-
-
-# TO DO
-#
-# write function to choose/delete uploaded profile pic(s)
-# translate website to english (everything, also error messages etc)
